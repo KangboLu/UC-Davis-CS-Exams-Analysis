@@ -1,0 +1,10 @@
+http://heather.cs.ucdavis.edu/~matloff/132/Hwk/ProblemAData/132/F13.txt
+http://heather.cs.ucdavis.edu/~matloff/132/Hwk/ProblemAData/132/W15.txt
+http://heather.cs.ucdavis.edu/~matloff/132/Hwk/ProblemAData/132/W16.txt
+http://heather.cs.ucdavis.edu/~matloff/132/Hwk/ProblemAData/132/W17.txt
+http://heather.cs.ucdavis.edu/~matloff/132/Hwk/ProblemAData/145/F14.txt
+http://heather.cs.ucdavis.edu/~matloff/132/Hwk/ProblemAData/145/W17.txt
+http://heather.cs.ucdavis.edu/~matloff/132/Hwk/ProblemAData/158/F13.txt
+http://heather.cs.ucdavis.edu/~matloff/132/Hwk/ProblemAData/158/F17.txt
+http://heather.cs.ucdavis.edu/~matloff/132/Hwk/ProblemAData/158/S16.txt
+http://heather.cs.ucdavis.edu/~matloff/132/Hwk/ProblemAData/158/W15.txt
