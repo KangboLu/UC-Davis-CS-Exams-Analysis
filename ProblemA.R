@@ -73,6 +73,6 @@ colnames(quiz_158_data) <- c("course name", "year offered", "major", "quiz avera
 
 # Combine 132, 145, and 159 data and modify course name column data
 student_quiz <- rbind(quiz_132_data, quiz_145_data, quiz_158_data)
-major_name_modifer <- function(name) ifelse(name=="LCSI", "CS", "ECS")
+major_name_modifer <- function(name) ifelse(name=="LCSI", "CS", "CSE")
 student_quiz["major"] <- lapply(student_quiz["major"], major_name_modifer)
 student_quiz
