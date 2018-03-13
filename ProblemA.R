@@ -75,4 +75,33 @@ colnames(quiz_158_data) <- c("course name", "year offered", "major", "quiz avera
 student_quiz <- rbind(quiz_132_data, quiz_145_data, quiz_158_data)
 major_name_modifer <- function(name) ifelse(name=="LCSI", "CS", "CSE")
 student_quiz["major"] <- lapply(student_quiz["major"], major_name_modifer)
-student_quiz
+
+#=================================================================
+# 95% Confidence Interval for ECS 132 population mean quiz average
+#=================================================================
+ECS132_sample_mean <- mean(quiz_132_data[["quiz average"]])
+ECS132_sample_variance <- mean(quiz_132_data[["quiz average"]]^2) - ECS132_sample_mean^2
+ECS132_sample_std <- sqrt(ECS132_sample_variance)
+radius <- 1.96 * ECS132_sample_std / sqrt(nrow(quiz_132_data))
+cat("Approx. 95% CI for population mean quiz average for ECS132 =", 
+    ECS132_sample_mean - radius,"to",ECS132_sample_mean + radius,"\n")
+
+#=================================================================
+# 95% Confidence Interval for ECS 145 population mean quiz average
+#=================================================================
+ECS145_sample_mean <- mean(quiz_145_data[["quiz average"]])
+ECS145_sample_variance <- mean(quiz_145_data[["quiz average"]]^2) - ECS145_sample_mean^2
+ECS145_sample_std <- sqrt(ECS145_sample_variance)
+radius <- 1.96 * ECS145_sample_std / sqrt(nrow(quiz_145_data))
+cat("Approx. 95% CI for population mean quiz average for ECS145 =", 
+    ECS132_sample_mean - radius,"to",ECS145_sample_mean + radius,"\n")
+
+#=================================================================
+# 95% Confidence Interval for ECS 158 population mean quiz average
+#=================================================================
+ECS158_sample_mean <- mean(quiz_158_data[["quiz average"]])
+ECS158_sample_variance <- mean(quiz_158_data[["quiz average"]]^2) - ECS158_sample_mean^2
+ECS158_sample_std <- sqrt(ECS158_sample_variance)
+radius <- 1.96 * ECS158_sample_std / sqrt(nrow(quiz_158_data))
+cat("Approx. 95% CI for population mean quiz average for ECS158 =", 
+    ECS158_sample_mean - radius,"to",ECS158_sample_mean + radius,"\n")
