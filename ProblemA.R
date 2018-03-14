@@ -115,3 +115,12 @@ p_hat2 <- ECS145_sample_mean
 R <- 1.96 * sqrt( (ECS132_sample_variance/nrow(quiz_145_data)) + (ECS145_sample_variance/nrow(quiz_145_data)) )
 cat("\nApprox. 95% CI for the difference in ECS132 and ECS145 Population Mean =", 
     p_hat1 - p_hat2 - R,"to", p_hat1 - p_hat2 + R,"\n")
+
+#==============================================================================================================
+# 95% Confidence Interval for the difference in population mean quiz averages in ECS 145 between the two majors
+#==============================================================================================================
+# HANZHI DING will do it
+# p_hat1 − p_hat2 ± R
+#for (i in 1:nrows(quiz_145_data)) {
+ # if (i[])
+#}
