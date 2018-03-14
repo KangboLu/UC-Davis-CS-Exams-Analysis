@@ -83,7 +83,7 @@ ECS132_sample_mean <- mean(quiz_132_data[["quiz average"]])
 ECS132_sample_variance <- mean(quiz_132_data[["quiz average"]]^2) - ECS132_sample_mean^2
 ECS132_sample_std <- sqrt(ECS132_sample_variance)
 radius <- 1.96 * ECS132_sample_std / sqrt(nrow(quiz_132_data))
-cat("Approx. 95% CI for population mean quiz average for ECS132 =", 
+cat("Approx. 95% CI for population mean quiz average for ECS132 =",
     ECS132_sample_mean - radius,"to", ECS132_sample_mean + radius,"\n")
 
 #=================================================================
@@ -93,7 +93,7 @@ ECS145_sample_mean <- mean(quiz_145_data[["quiz average"]])
 ECS145_sample_variance <- mean(quiz_145_data[["quiz average"]]^2) - ECS145_sample_mean^2
 ECS145_sample_std <- sqrt(ECS145_sample_variance)
 radius <- 1.96 * ECS145_sample_std / sqrt(nrow(quiz_145_data))
-cat("Approx. 95% CI for population mean quiz average for ECS145 =", 
+cat("Approx. 95% CI for population mean quiz average for ECS145 =",
     ECS132_sample_mean - radius,"to", ECS145_sample_mean + radius,"\n")
 
 #=================================================================
@@ -103,7 +103,7 @@ ECS158_sample_mean <- mean(quiz_158_data[["quiz average"]])
 ECS158_sample_variance <- mean(quiz_158_data[["quiz average"]]^2) - ECS158_sample_mean^2
 ECS158_sample_std <- sqrt(ECS158_sample_variance)
 radius <- 1.96 * ECS158_sample_std / sqrt(nrow(quiz_158_data))
-cat("Approx. 95% CI for population mean quiz average for ECS158 =", 
+cat("Approx. 95% CI for population mean quiz average for ECS158 =",
     ECS158_sample_mean - radius,"to", ECS158_sample_mean + radius,"\n")
 
 #================================================================================
@@ -113,14 +113,23 @@ cat("Approx. 95% CI for population mean quiz average for ECS158 =",
 p_hat1 <- ECS132_sample_mean
 p_hat2 <- ECS145_sample_mean
 R <- 1.96 * sqrt( (ECS132_sample_variance/nrow(quiz_145_data)) + (ECS145_sample_variance/nrow(quiz_145_data)) )
-cat("\nApprox. 95% CI for the difference in ECS132 and ECS145 Population Mean =", 
+cat("\nApprox. 95% CI for the difference in ECS132 and ECS145 Population Mean =",
     p_hat1 - p_hat2 - R,"to", p_hat1 - p_hat2 + R,"\n")
 
 #==============================================================================================================
 # 95% Confidence Interval for the difference in population mean quiz averages in ECS 145 between the two majors
 #==============================================================================================================
-# HANZHI DING will do it
 # p_hat1 − p_hat2 ± R
-#for (i in 1:nrows(quiz_145_data)) {
- # if (i[])
-#}
+ECS <- vector(mode="numeric", length=0)
+CS <- vector(mode="numeric", length=0)
+for (i in 1:nrow(quiz_145_data)) {quiz_145_data
+  if (quiz_145_data[i,"major"] == "ECSE") ECS <- c(ECS, quiz_145_data[i,"quiz average"])
+  if (quiz_145_data[i,"major"]== "LCSI") CS <- c(CS, quiz_145_data[i,"quiz average"])
+}
+p_hat1 <- mean(ECS)
+p_hat2 <- mean(CS)
+varECS <- mean(ECS^2) - p_hat1^2
+varCS <- mean(CS^2) - p_hat2^2
+R <- 1.96 * sqrt( (varECS/length(CS)) + (varCS/length(CS)) )
+cat("\nApprox. 95% CI for the difference in population mean quiz averages in ECS 145 between the two majors =",
+    p_hat1 - p_hat2 - R,"to", p_hat1 - p_hat2 + R,"\n")
