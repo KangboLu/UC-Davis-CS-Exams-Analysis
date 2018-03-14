@@ -84,7 +84,7 @@ ECS132_sample_variance <- mean(quiz_132_data[["quiz average"]]^2) - ECS132_sampl
 ECS132_sample_std <- sqrt(ECS132_sample_variance)
 radius <- 1.96 * ECS132_sample_std / sqrt(nrow(quiz_132_data))
 cat("Approx. 95% CI for population mean quiz average for ECS132 =", 
-    ECS132_sample_mean - radius,"to",ECS132_sample_mean + radius,"\n")
+    ECS132_sample_mean - radius,"to", ECS132_sample_mean + radius,"\n")
 
 #=================================================================
 # 95% Confidence Interval for ECS 145 population mean quiz average
@@ -94,7 +94,7 @@ ECS145_sample_variance <- mean(quiz_145_data[["quiz average"]]^2) - ECS145_sampl
 ECS145_sample_std <- sqrt(ECS145_sample_variance)
 radius <- 1.96 * ECS145_sample_std / sqrt(nrow(quiz_145_data))
 cat("Approx. 95% CI for population mean quiz average for ECS145 =", 
-    ECS132_sample_mean - radius,"to",ECS145_sample_mean + radius,"\n")
+    ECS132_sample_mean - radius,"to", ECS145_sample_mean + radius,"\n")
 
 #=================================================================
 # 95% Confidence Interval for ECS 158 population mean quiz average
@@ -104,4 +104,14 @@ ECS158_sample_variance <- mean(quiz_158_data[["quiz average"]]^2) - ECS158_sampl
 ECS158_sample_std <- sqrt(ECS158_sample_variance)
 radius <- 1.96 * ECS158_sample_std / sqrt(nrow(quiz_158_data))
 cat("Approx. 95% CI for population mean quiz average for ECS158 =", 
-    ECS158_sample_mean - radius,"to",ECS158_sample_mean + radius,"\n")
+    ECS158_sample_mean - radius,"to", ECS158_sample_mean + radius,"\n")
+
+#================================================================================
+# 95% Confidence Interval for the difference in ECS132 and ECS145 Population Mean
+#================================================================================
+# p_hat1 − p_hat2 ± R
+p_hat1 <- ECS132_sample_mean
+p_hat2 <- ECS145_sample_mean
+R <- 1.96 * sqrt( (ECS132_sample_variance/nrow(quiz_145_data)) + (ECS145_sample_variance/nrow(quiz_145_data)) )
+cat("\nApprox. 95% CI for the difference in ECS132 and ECS145 Population Mean =", 
+    p_hat1 - p_hat2 - R,"to", p_hat1 - p_hat2 + R,"\n")
