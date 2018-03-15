@@ -120,16 +120,13 @@ cat("\nApprox. 95% CI for the difference in ECS132 and ECS145 Population Mean ="
 # 95% Confidence Interval for the difference in population mean quiz averages in ECS 145 between the two majors
 #==============================================================================================================
 # p_hat1 − p_hat2 ± R
-ECS <- vector(mode="numeric", length=0)
-CS <- vector(mode="numeric", length=0)
-for (i in 1:nrow(quiz_145_data)) {quiz_145_data
-  if (quiz_145_data[i,"major"] == "ECSE") ECS <- c(ECS, quiz_145_data[i,"quiz average"])
-  if (quiz_145_data[i,"major"]== "LCSI") CS <- c(CS, quiz_145_data[i,"quiz average"])
-}
-p_hat1 <- mean(ECS)
-p_hat2 <- mean(CS)
-varECS <- mean(ECS^2) - p_hat1^2
-varCS <- mean(CS^2) - p_hat2^2
-R <- 1.96 * sqrt( (varECS/length(CS)) + (varCS/length(CS)) )
+ECS_145 <- subset(student_quiz, student_quiz["course name"] == "ECS 145")
+CSEin145 <- unlist(subset(ECS_145, ECS_145["major"] == "CSE", select = "quiz average"))
+CSin145 <- unlist(subset(ECS_145, ECS_145["major"] == "CS", select = "quiz average"))
+p_hat1 <- mean(CSEin145)
+p_hat2 <- mean(CSin145)
+varCSEin145 <- mean(CSEin145^2) - p_hat1^2
+varCSin145 <- mean(CSin145^2) - p_hat2^2
+R <- 1.96 * sqrt( (varCSEin145/length(CSin145)) + (varCSin145/length(CSin145)) )
 cat("\nApprox. 95% CI for the difference in population mean quiz averages in ECS 145 between the two majors =",
     p_hat1 - p_hat2 - R,"to", p_hat1 - p_hat2 + R,"\n")
