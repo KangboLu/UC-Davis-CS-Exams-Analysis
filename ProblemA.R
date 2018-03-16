@@ -122,11 +122,17 @@ cat("\nApprox. 95% CI for the difference in ECS132 and ECS145 Population Mean ="
 #==============================================================================================================
 # 95% Confidence Interval for the difference in population mean quiz averages in ECS 145 between the two majors
 #==============================================================================================================
-# HANZHI DING will do it
 # p_hat1 − p_hat2 ± R
-#for (i in 1:nrows(quiz_145_data)) {
- # if (i[])
-#}
+ECS_145 <- subset(student_quiz, student_quiz["course name"] == "ECS 145")
+CSEin145 <- unlist(subset(ECS_145, ECS_145["major"] == "CSE", select = "quiz average"))
+CSin145 <- unlist(subset(ECS_145, ECS_145["major"] == "CS", select = "quiz average"))
+p_hat1 <- mean(CSEin145)
+p_hat2 <- mean(CSin145)
+varCSEin145 <- mean(CSEin145^2) - p_hat1^2
+varCSin145 <- mean(CSin145^2) - p_hat2^2
+R <- 1.96 * sqrt( (varCSEin145/length(CSin145)) + (varCSin145/length(CSin145)) )
+cat("\nApprox. 95% CI for the difference in population mean quiz averages in ECS 145 between the two majors =",
+    p_hat1 - p_hat2 - R,"to", p_hat1 - p_hat2 + R,"\n")
 
 majorcodes <- as.integer(student_quiz[["major"]])
 cs_major <- as.integer(majorcodes==2)
