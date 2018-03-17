@@ -46,6 +46,7 @@ ECS256_exams <- append(complete_file_path(urls["ECS256"], ECS256_exams), ECS256_
 line_collapse <- function(file) paste(readLines(file), collapse="\n")
 collapse_exam <- function(exam) unlist(lapply(exam, line_collapse))
 ECS50_exams <- collapse_exam(ECS50_exams)
+ECS132_exams <- collapse_exam(ECS132_exams)
 ECS145_exams <- collapse_exam(ECS145_exams)
 ECS152A_exams <- collapse_exam(ECS152A_exams)
 ECS154A_exams <- collapse_exam(ECS154A_exams)
@@ -54,6 +55,21 @@ ECS156_exams <- collapse_exam(ECS156_exams)
 ECS158_exams <- collapse_exam(ECS158_exams)
 ECS256_exams <- collapse_exam(ECS256_exams)
 
-ECS132_exams
 # remove stopwords for better analysis
-#stopwords()
+test <- removeWords(ECS132_exams[1], stopwords())
+test <- Corpus(VectorSource(test))
+test <- tm_map(test, removeWords, stopwords())
+test <- tm_map(test, removePunctuation)
+test <- tm_map(test, removeNumbers)
+test <- tm_map(test, stripWhitespace)
+test <- TermDocumentMatrix(test)
+
+getTermsFrequency <- function(corpus.tdm){
+  all.terms <- findFreqTerms(corpus.tdm)
+  freq = tm_term_score(x = corpus.tdm, terms = all.terms, FUN = slam::row_sums)
+  terms <- names(freq); names(freq) <- NULL
+  corpora.allTermsFrequency <- data.frame(term = terms, freq = freq)
+  corpora.allTermsFrequency[order(corpora.allTermsFrequency$freq, decreasing = T), ]
+}
+
+test <- getTermsFrequency(test)
