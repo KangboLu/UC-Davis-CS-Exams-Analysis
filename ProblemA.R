@@ -135,8 +135,9 @@ cat("\nApprox. 95% CI for the difference in population mean quiz averages in ECS
     p_hat1 - p_hat2 - R,"to", p_hat1 - p_hat2 + R,"\n")
 
 majorcodes <- as.integer(student_quiz[["major"]])
-cs_major <- as.integer(majorcodes==2)
+is_cs_major <- as.integer(majorcodes==2)
 coursecodes <- as.integer(student_quiz[["course name"]])
-ECS132 <- as.integer(coursecodes==)
-ECS145 <- as.integer(coursecodes==)
+is_ECS132 <- as.integer(coursecodes==1)
+is_ECS145 <- as.integer(coursecodes==2)
 
+summary(lm(student_quiz$`quiz average` ~ student_quiz$`year offered` + is_cs_major + is_ECS132 + is_ECS145))
