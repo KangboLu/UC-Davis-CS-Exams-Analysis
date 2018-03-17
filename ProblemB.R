@@ -1,5 +1,5 @@
 library(stringr)
-
+library(tm)
 # urls for scrapping file paths
 urls <- c("http://heather.cs.ucdavis.edu/~matloff/50/OldExams/",
           "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/",
@@ -26,7 +26,7 @@ ECS256_exams <- vector()
 # match all the .tex file names and return compeleted file path
 complete_file_path <- function(url, exam_list) {
   html <- paste(readLines(url), collapse="\n")
-  return_extension <- unlist(str_extract_all(html, "[WSF](.)*.tex(?=\")")) 
+  return_extension <- unlist(str_extract_all(html, "(?<=(href=\"))(.)*.tex(?=\")"))
   directory <- rep(url, length(return_extension))
   paste0(directory, return_extension)
 }
@@ -41,12 +41,19 @@ ECS154B_exams <- append(complete_file_path(urls["ECS154B"], ECS154B_exams), ECS1
 ECS156_exams <- append(complete_file_path(urls["ECS156"], ECS156_exams), ECS156_exams)
 ECS158_exams <- append(complete_file_path(urls["ECS158"], ECS158_exams), ECS158_exams)
 ECS256_exams <- append(complete_file_path(urls["ECS256"], ECS256_exams), ECS256_exams)
-#ECS50_exams
-#ECS145_exams
-#ECS132_exams
-#ECS152A_exams
-#ECS154A_exams
-#ECS154B_exams
-#ECS156_exams
-#ECS158_exams
-#ECS256_exams
+
+# read files and store in each course's exam vector
+line_collapse <- function(file) paste(readLines(file), collapse="\n")
+collapse_exam <- function(exam) unlist(lapply(exam, line_collapse))
+ECS50_exams <- collapse_exam(ECS50_exams)
+ECS145_exams <- collapse_exam(ECS145_exams)
+ECS152A_exams <- collapse_exam(ECS152A_exams)
+ECS154A_exams <- collapse_exam(ECS154A_exams)
+ECS154B_exams <- collapse_exam(ECS154B_exams)
+ECS156_exams <- collapse_exam(ECS156_exams)
+ECS158_exams <- collapse_exam(ECS158_exams)
+ECS256_exams <- collapse_exam(ECS256_exams)
+
+ECS132_exams
+# remove stopwords for better analysis
+#stopwords()
