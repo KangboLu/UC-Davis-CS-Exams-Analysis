@@ -54,15 +54,24 @@ ECS154B_exams <- collapse_exam(ECS154B_exams)
 ECS156_exams <- collapse_exam(ECS156_exams)
 ECS158_exams <- collapse_exam(ECS158_exams)
 ECS256_exams <- collapse_exam(ECS256_exams)
+exams <- c(ECS50_exams, ECS132_exams, ECS145_exams, ECS152A_exams, ECS154A_exams,
+           ECS154B_exams, ECS156_exams, ECS158_exams ,ECS256_exams)
 
 # remove stopwords for better analysis
+stop_words <- c("The", "the", "blank", "will", "item", 
+                "cdot", "find", "Find", "copy", "make", 
+                "suppose", "code", "suppose", "Suppose",
+                "example", "blanks", "makeatletter", "makeatother",
+                "use", "hline", "one", "two", "textbfdirections",
+                "httpwwwlyxorg",
+                stopwords("en"))
 clean_corpus <- function(file) {
   corpus <- Corpus(VectorSource(file))
+  corpus <- tm_map(corpus, tolower)
   corpus <- tm_map(corpus, removePunctuation)
   corpus <- tm_map(corpus, removeNumbers)
-  stop_words <- c("item", "cdot", "find", "copy", "make", "suppose", stopwords())
-  corpus <- tm_map(corpus, removeWords, stop_words)
   corpus <- tm_map(corpus, stripWhitespace)
+  corpus <- tm_map(corpus, removeWords, stop_words)
   return(corpus)
 }
 corpus <- clean_corpus(ECS50_exams)
@@ -78,15 +87,3 @@ getTermsFrequency <- function(corpus.tdm){
   corpora.allTermsFrequency[order(corpora.allTermsFrequency$freq, decreasing = T), ]
 }
 corpus <- getTermsFrequency(corpus)
-corpus
-
-# drawing word cloud
-visualizeWordcloud <- function(ftm.df){
-  mypal <- brewer.pal(8,"Dark2")
-  wordcloud(words = ftm.df$term,
-            freq = ftm.df$freq, 
-            colors = mypal, 
-            scale=c(2,.1),
-            random.order = F, max.words = 500)
-}
-visualizeWordcloud(corpus)
