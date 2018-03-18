@@ -43,8 +43,8 @@ ECS158_exams <- append(complete_file_path(urls["ECS158"], ECS158_exams), ECS158_
 ECS256_exams <- append(complete_file_path(urls["ECS256"], ECS256_exams), ECS256_exams)
 
 # read files and store in each course's exam vector
-line_collapse <- function(file) paste(readLines(file), collapse="\n")
-collapse_exam <- function(exam) unlist(lapply(exam, line_collapse))
+remove_latex_term <- function(file) gsub("([{]?)[\\](.)*[}]", " ", readLines(file))
+collapse_exam <- function(exam) unlist(lapply(exam, remove_latex_term))
 ECS50_exams <- collapse_exam(ECS50_exams)
 ECS132_exams <- collapse_exam(ECS132_exams)
 ECS145_exams <- collapse_exam(ECS145_exams)
@@ -56,14 +56,20 @@ ECS158_exams <- collapse_exam(ECS158_exams)
 ECS256_exams <- collapse_exam(ECS256_exams)
 
 # remove stopwords for better analysis
-test <- removeWords(ECS132_exams[1], stopwords())
-test <- Corpus(VectorSource(test))
-test <- tm_map(test, removeWords, stopwords())
-test <- tm_map(test, removePunctuation)
-test <- tm_map(test, removeNumbers)
-test <- tm_map(test, stripWhitespace)
-test <- TermDocumentMatrix(test)
+clean_corpus <- function(file) {
+  corpus <- Corpus(VectorSource(file))
+  corpus <- tm_map(corpus, removePunctuation)
+  corpus <- tm_map(corpus, removeNumbers)
+  stop_words <- c("item", "cdot", "find", "copy", "make", "suppose", stopwords())
+  corpus <- tm_map(corpus, removeWords, stop_words)
+  corpus <- tm_map(corpus, stripWhitespace)
+  return(corpus)
+}
+corpus <- clean_corpus(ECS50_exams)
+corpus <- TermDocumentMatrix(corpus)
+corpus
 
+# create term frequency data frame for a given exam
 getTermsFrequency <- function(corpus.tdm){
   all.terms <- findFreqTerms(corpus.tdm)
   freq = tm_term_score(x = corpus.tdm, terms = all.terms, FUN = slam::row_sums)
@@ -71,5 +77,16 @@ getTermsFrequency <- function(corpus.tdm){
   corpora.allTermsFrequency <- data.frame(term = terms, freq = freq)
   corpora.allTermsFrequency[order(corpora.allTermsFrequency$freq, decreasing = T), ]
 }
+corpus <- getTermsFrequency(corpus)
+corpus
 
-test <- getTermsFrequency(test)
+# drawing word cloud
+visualizeWordcloud <- function(ftm.df){
+  mypal <- brewer.pal(8,"Dark2")
+  wordcloud(words = ftm.df$term,
+            freq = ftm.df$freq, 
+            colors = mypal, 
+            scale=c(2,.1),
+            random.order = F, max.words = 500)
+}
+visualizeWordcloud(corpus)
