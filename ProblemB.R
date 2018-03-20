@@ -77,27 +77,17 @@ clean_corpus <- function(file) {
 
 corpus_50 <- clean_corpus(ECS50_exams)
 #corpus_50 <- TermDocumentMatrix(corpus_50)
- tdf_50 <-  TermDocumentMatrix(corpus_50)
- dtf_50 <- DocumentTermMatrix(corpus_50)
- freq <- colSums(as.matrix(dtf_50))
- ord <- order(freq,decreasing=TRUE)
- test <- freq[head(ord,n=12)]
- #names(test)[1] <- c("ECS50")
- 
- 
+tdf_50 <-  TermDocumentMatrix(corpus_50)
+dtf_50 <- DocumentTermMatrix(corpus_50)
+freq <- colSums(as.matrix(dtf_50))
+ord <- order(freq,decreasing=TRUE)
+test <- freq[ord]
+test <- as.matrix(dtf_50)[,names(head(test, n=12))]
 
- # test <- inspect(dtf_50[,ord[1:12]])
- # test <- cbind(test, rep(1, nrow(test)))
- # colnames(test)[ncol(test)] <- c("ECS50")
- # summary(glm(test[,ncol(test)]~ test[,2] + test[,3] + test[,4] + test[,5] + test[,6], family = binomial))
- # 
- # 
- 
- 
- 
- 
- 
- 
+test <- cbind(rep(1, nrow(test)), test)
+colnames(test)[1] <- c("ECS50")
+summary(glm(test[,1]~ test[,2] + test[,3], family = binomial))
+
 # corpus_132 <- clean_corpus(ECS132_exams)
 # corpus_132 <- TermDocumentMatrix(corpus_132)
 # 
@@ -140,15 +130,3 @@ corpus_50 <- getTermsFrequency(corpus_50)
 # corpus_156 <- getTermsFrequency(corpus_156)
 # corpus_158 <- getTermsFrequency(corpus_158)
 # corpus_256 <- getTermsFrequency(corpus_256)
-
-# corpus_50 <- head(getTermsFrequency(corpus_50),12)
-# corpus_132 <- head(getTermsFrequency(corpus_132),12)
-# corpus_145 <- head(getTermsFrequency(corpus_145),12)
-# corpus_152A <- head(getTermsFrequency(corpus_152A),12)
-# corpus_154A <- head(getTermsFrequency(corpus_154A),12)
-# corpus_154B <- head(getTermsFrequency(corpus_154B),12)
-# corpus_156 <- head(getTermsFrequency(corpus_156),12)
-# corpus_158 <- head(getTermsFrequency(corpus_158),12)
-# corpus_256 <- head(getTermsFrequency(corpus_256),12)
-
-
