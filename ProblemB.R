@@ -34,28 +34,28 @@ complete_file_path <- function(url, exam_list) {
 # complete exam path for each course
 ECS50_exams <- append(complete_file_path(urls["ECS50"], ECS50_exams), ECS50_exams)
 ECS132_exams <- append(complete_file_path(urls["ECS132"], ECS132_exams), ECS132_exams)
-# ECS145_exams  <- append(complete_file_path(urls["ECS145"], ECS145_exams), ECS145_exams)
-# ECS152A_exams <- append(complete_file_path(urls["ECS152A"], ECS152A_exams), ECS152A_exams)
-# ECS154A_exams <- append(complete_file_path(urls["ECS154A"], ECS154A_exams), ECS154A_exams)
-# ECS154B_exams <- append(complete_file_path(urls["ECS154B"], ECS154B_exams), ECS154B_exams)
-# ECS156_exams <- append(complete_file_path(urls["ECS156"], ECS156_exams), ECS156_exams)
-# ECS158_exams <- append(complete_file_path(urls["ECS158"], ECS158_exams), ECS158_exams)
-# ECS256_exams <- append(complete_file_path(urls["ECS256"], ECS256_exams), ECS256_exams)
+ECS145_exams  <- append(complete_file_path(urls["ECS145"], ECS145_exams), ECS145_exams)
+ECS152A_exams <- append(complete_file_path(urls["ECS152A"], ECS152A_exams), ECS152A_exams)
+ECS154A_exams <- append(complete_file_path(urls["ECS154A"], ECS154A_exams), ECS154A_exams)
+ECS154B_exams <- append(complete_file_path(urls["ECS154B"], ECS154B_exams), ECS154B_exams)
+ECS156_exams <- append(complete_file_path(urls["ECS156"], ECS156_exams), ECS156_exams)
+ECS158_exams <- append(complete_file_path(urls["ECS158"], ECS158_exams), ECS158_exams)
+ECS256_exams <- append(complete_file_path(urls["ECS256"], ECS256_exams), ECS256_exams)
 
 # read files and store in each course's exam vector
 remove_latex_term <- function(file) gsub("([{]?)[\\](.)*[}]", " ", readLines(file))
-collapse_exam <- function(exam) unlist(lapply(exam, remove_latex_term))
+collapse_exam <- function(exam) lapply(exam, remove_latex_term)
 ECS50_exams <- collapse_exam(ECS50_exams)
 ECS132_exams <- collapse_exam(ECS132_exams)
-# ECS145_exams <- collapse_exam(ECS145_exams)
-# ECS152A_exams <- collapse_exam(ECS152A_exams)
-# ECS154A_exams <- collapse_exam(ECS154A_exams)
-# ECS154B_exams <- collapse_exam(ECS154B_exams)
-# ECS156_exams <- collapse_exam(ECS156_exams)
-# ECS158_exams <- collapse_exam(ECS158_exams)
-# ECS256_exams <- collapse_exam(ECS256_exams)
-# exams <- c(ECS50_exams, ECS132_exams, ECS145_exams, ECS152A_exams, ECS154A_exams,
-#            ECS154B_exams, ECS156_exams, ECS158_exams ,ECS256_exams)
+ECS145_exams <- collapse_exam(ECS145_exams)
+ECS152A_exams <- collapse_exam(ECS152A_exams)
+ECS154A_exams <- collapse_exam(ECS154A_exams)
+ECS154B_exams <- collapse_exam(ECS154B_exams)
+ECS156_exams <- collapse_exam(ECS156_exams)
+ECS158_exams <- collapse_exam(ECS158_exams)
+ECS256_exams <- collapse_exam(ECS256_exams)
+exams <- c(ECS50_exams, ECS132_exams, ECS145_exams, ECS152A_exams, ECS154A_exams,
+           ECS154B_exams, ECS156_exams, ECS158_exams ,ECS256_exams)
 
 # remove stopwords for better analysis
 stop_words <- c("The", "the", "blank", "will", "item", 
@@ -63,7 +63,9 @@ stop_words <- c("The", "the", "blank", "will", "item",
                 "suppose", "code", "suppose", "Suppose",
                 "example", "blanks", "makeatletter", "makeatother",
                 "use", "hline", "one", "two", "textbfdirections",
-                "httpwwwlyxorg",
+                "httpwwwlyxorg", "answer", "answers", "consider",
+                "number", "name", "instruction", "line", "random",
+                "print", "get", "right", "function",
                 stopwords("en"))
 clean_corpus <- function(file) {
   corpus <- Corpus(VectorSource(file))
@@ -75,22 +77,30 @@ clean_corpus <- function(file) {
   return(corpus)
 }
 
-# create dtf matrix for analysis
-create_dtf_matrix <- function(exam, course_name) {
+# function to create dtf matrix for analysis
+create_dtf_matrix <- function(exam) {
   # clean corpus and create dtf
   corpus <- clean_corpus(exam)
   dtf <- DocumentTermMatrix(corpus)
-  
-  # obtain top 12 freq word
   freq <- colSums(as.matrix(dtf))
   ord <- order(freq,decreasing=TRUE)
   freq <- freq[ord]
-  dtf <- as.matrix(dtf)[,names(head(freq, n=12))] 
-  
-  # add course name column with value = 1
-  dtf <- cbind(rep(1, nrow(dtf)), dtf)
-  colnames(dtf)[1] <- course_name
-  dtf
+  dtf <- as.matrix(dtf)[,names(head(freq, n = 2))]
 }
-dtf_50 <- create_dtf_matrix(ECS132_exams, c("ECS132"))
-dtf_132 <- create_dtf_matrix(ECS132_exams, c("ECS132"))
+
+# clean and create document term matrix for dtf
+corpus <- clean_corpus(exams)
+dtf <- as.matrix(DocumentTermMatrix(corpus))
+dtf_50  <- create_dtf_matrix(ECS50_exams)
+dtf_132 <- create_dtf_matrix(ECS132_exams)
+dtf_145 <- create_dtf_matrix(ECS145_exams)
+dtf_152A <- create_dtf_matrix(ECS152A_exams)
+dtf_154A <- create_dtf_matrix(ECS154A_exams)
+dtf_154B <- create_dtf_matrix(ECS154B_exams)
+dtf_156 <- create_dtf_matrix(ECS156_exams)
+dtf_158 <- create_dtf_matrix(ECS158_exams)
+dtf_256 <- create_dtf_matrix(ECS256_exams)
+frequent_words <- c(colnames(dtf_50), colnames(dtf_132), colnames(dtf_145), colnames(dtf_152A),
+                    colnames(dtf_154A), colnames(dtf_154B), colnames(dtf_156), colnames(dtf_158), colnames(dtf_256))
+dtf <- dtf[,frequent_words]
+dtf
