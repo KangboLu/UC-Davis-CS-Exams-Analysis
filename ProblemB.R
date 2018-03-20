@@ -33,7 +33,7 @@ complete_file_path <- function(url, exam_list) {
 
 # complete exam path for each course
 ECS50_exams <- append(complete_file_path(urls["ECS50"], ECS50_exams), ECS50_exams)
-# ECS132_exams <- append(complete_file_path(urls["ECS132"], ECS132_exams), ECS132_exams)
+ECS132_exams <- append(complete_file_path(urls["ECS132"], ECS132_exams), ECS132_exams)
 # ECS145_exams  <- append(complete_file_path(urls["ECS145"], ECS145_exams), ECS145_exams)
 # ECS152A_exams <- append(complete_file_path(urls["ECS152A"], ECS152A_exams), ECS152A_exams)
 # ECS154A_exams <- append(complete_file_path(urls["ECS154A"], ECS154A_exams), ECS154A_exams)
@@ -46,7 +46,7 @@ ECS50_exams <- append(complete_file_path(urls["ECS50"], ECS50_exams), ECS50_exam
 remove_latex_term <- function(file) gsub("([{]?)[\\](.)*[}]", " ", readLines(file))
 collapse_exam <- function(exam) unlist(lapply(exam, remove_latex_term))
 ECS50_exams <- collapse_exam(ECS50_exams)
-# ECS132_exams <- collapse_exam(ECS132_exams)
+ECS132_exams <- collapse_exam(ECS132_exams)
 # ECS145_exams <- collapse_exam(ECS145_exams)
 # ECS152A_exams <- collapse_exam(ECS152A_exams)
 # ECS154A_exams <- collapse_exam(ECS154A_exams)
@@ -75,58 +75,22 @@ clean_corpus <- function(file) {
   return(corpus)
 }
 
-corpus_50 <- clean_corpus(ECS50_exams)
-#corpus_50 <- TermDocumentMatrix(corpus_50)
-tdf_50 <-  TermDocumentMatrix(corpus_50)
-dtf_50 <- DocumentTermMatrix(corpus_50)
-freq <- colSums(as.matrix(dtf_50))
-ord <- order(freq,decreasing=TRUE)
-test <- freq[ord]
-test <- as.matrix(dtf_50)[,names(head(test, n=12))]
-
-test <- cbind(rep(1, nrow(test)), test)
-colnames(test)[1] <- c("ECS50")
-summary(glm(test[,1]~ test[,2] + test[,3], family = binomial))
-
-# corpus_132 <- clean_corpus(ECS132_exams)
-# corpus_132 <- TermDocumentMatrix(corpus_132)
-# 
-# corpus_145 <- clean_corpus(ECS145_exams)
-# corpus_145 <- TermDocumentMatrix(corpus_145)
-# 
-# corpus_152A <- clean_corpus(ECS152A_exams)
-# corpus_152A <- TermDocumentMatrix(corpus_152A)
-# 
-# corpus_154A <- clean_corpus(ECS154A_exams)
-# corpus_154A <- TermDocumentMatrix(corpus_154A)
-# 
-# corpus_154B <- clean_corpus(ECS154B_exams)
-# corpus_154B <- TermDocumentMatrix(corpus_154B)
-# 
-# corpus_156 <- clean_corpus(ECS156_exams)
-# corpus_156 <- TermDocumentMatrix(corpus_156)
-# 
-# corpus_158 <- clean_corpus(ECS158_exams)
-# corpus_158 <- TermDocumentMatrix(corpus_158)
-# 
-# corpus_256 <- clean_corpus(ECS256_exams)
-# corpus_256 <- TermDocumentMatrix(corpus_256)
-
-# create term frequency data frame for a given exam
-getTermsFrequency <- function(corpus.tdm){
-  all.terms <- findFreqTerms(corpus.tdm)
-  freq = tm_term_score(x = corpus.tdm, terms = all.terms, FUN = slam::row_sums)
-  terms <- names(freq); names(freq) <- NULL
-  corpora.allTermsFrequency <- data.frame(term = terms, freq = freq)
-  corpora.allTermsFrequency[order(corpora.allTermsFrequency$freq, decreasing = T), ]
+# create dtf matrix for analysis
+create_dtf_matrix <- function(exam, course_name) {
+  # clean corpus and create dtf
+  corpus <- clean_corpus(exam)
+  dtf <- DocumentTermMatrix(corpus)
+  
+  # obtain top 12 freq word
+  freq <- colSums(as.matrix(dtf))
+  ord <- order(freq,decreasing=TRUE)
+  freq <- freq[ord]
+  dtf <- as.matrix(dtf)[,names(head(freq, n=12))] 
+  
+  # add course name column with value = 1
+  dtf <- cbind(rep(1, nrow(dtf)), dtf)
+  colnames(dtf)[1] <- course_name
+  dtf
 }
-corpus_50 <- TermDocumentMatrix(corpus_50)
-corpus_50 <- getTermsFrequency(corpus_50)
-# corpus_132 <- getTermsFrequency(corpus_132)
-# corpus_145 <- getTermsFrequency(corpus_145)
-# corpus_152A <- getTermsFrequency(corpus_152A)
-# corpus_154A <- getTermsFrequency(corpus_154A)
-# corpus_154B <- getTermsFrequency(corpus_154B)
-# corpus_156 <- getTermsFrequency(corpus_156)
-# corpus_158 <- getTermsFrequency(corpus_158)
-# corpus_256 <- getTermsFrequency(corpus_256)
+dtf_50 <- create_dtf_matrix(ECS132_exams, c("ECS132"))
+dtf_132 <- create_dtf_matrix(ECS132_exams, c("ECS132"))
