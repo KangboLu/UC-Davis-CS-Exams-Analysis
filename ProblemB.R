@@ -93,6 +93,19 @@ test_data <- c("http://heather.cs.ucdavis.edu/~matloff/50/OldExams/F05I.tex",
   "http://heather.cs.ucdavis.edu/~matloff/158/OldExams/W12Quiz2.tex",
   "http://heather.cs.ucdavis.edu/~matloff/158/OldExams/W15Quiz3.tex",
   "http://heather.cs.ucdavis.edu/~matloff/256/Exams/F10Quiz2.tex")
+names(test_data) <- c(rep("ECS50", 13), rep("ECS132", 15), rep("ECS145", 7), rep("ECS152A", 2),
+                      rep("ECS154A", 3), rep("ECS154B", 1), rep("ECS156", 1), rep("ECS158", 7),
+                      rep("ECS256", 1))
+# names(test_data) <- c(names(test_data), rep("ECS132", 15))
+# names(test_data) <- c(names(test_data), rep("ECS145", 7))
+# names(test_data) <- c(names(test_data), rep("ECS152A", 2))
+# names(test_data) <- c(names(test_data), rep("ECS154A", 3))
+# names(test_data) <- c(names(test_data), rep("ECS154B", 1))
+# names(test_data) <- c(names(test_data), rep("ECS156", 1))
+# names(test_data) <- c(names(test_data), rep("ECS158", 7))
+# names(test_data) <- c(names(test_data), rep("ECS256", 1))
+
+
 
 # training data
 ECS50_exams <- ECS50_exams[!(ECS50_exams %in% test_data)]
@@ -105,9 +118,16 @@ ECS156_exams <- ECS156_exams[!(ECS156_exams %in% test_data)]
 ECS158_exams <- ECS158_exams[!(ECS158_exams %in% test_data)]
 ECS256_exams <- ECS256_exams[!(ECS256_exams %in% test_data)]
 
+# record the length of each exam
+exam_length <- c(length(ECS50_exams), length(ECS132_exams), length(ECS145_exams),
+                 length(ECS152A_exams), length(ECS154A_exams), length(ECS154B_exams),
+                 length(ECS156_exams), length(ECS158_exams), length(ECS256_exams))
+names(exam_length) <- c("ECS50", "ECS132", "ECS145", "ECS152A", "ECS154A", "ECS154B", "ECS156", "ECS158", "ECS256")
+
 # read files and store in each course's exam vector
 remove_latex_term <- function(file) gsub("([{]?)[\\](.)*[}]", " ", readLines(file))
 collapse_exam <- function(exam) lapply(exam, remove_latex_term)
+test_data <- collapse_exam(test_data)
 ECS50_exams <- collapse_exam(ECS50_exams)
 ECS132_exams <- collapse_exam(ECS132_exams)
 ECS145_exams <- collapse_exam(ECS145_exams)
@@ -128,7 +148,7 @@ stop_words <- c("The", "the", "blank", "will", "item",
                 "use", "hline", "one", "two", "textbfdirections",
                 "httpwwwlyxorg", "answer", "answers", "consider",
                 "number", "name", "instruction", "line", "random",
-                "print", "get", "right", "function",
+                "print", "get", "right", "function", "time",
                 stopwords("en"))
 clean_corpus <- function(file) {
   corpus <- Corpus(VectorSource(file))
@@ -165,5 +185,85 @@ dtf_158 <- create_dtf_matrix(ECS158_exams)
 dtf_256 <- create_dtf_matrix(ECS256_exams)
 frequent_words <- c(colnames(dtf_50), colnames(dtf_132), colnames(dtf_145), colnames(dtf_152A),
                     colnames(dtf_154A), colnames(dtf_154B), colnames(dtf_156), colnames(dtf_158), colnames(dtf_256))
+frequent_words <- frequent_words[!duplicated(frequent_words)] # remove duplicate
 dtf <- dtf[,frequent_words]
-dtf
+
+# test data
+test_dtf <- clean_corpus(test_data)
+test_dtf <- as.matrix(DocumentTermMatrix(test_dtf))
+for(i in 1:length(frequent_words)) {
+  if(sum(colnames(test_dtf) == frequent_words[i]) == 0) {
+    test_dtf <- cbind(test_dtf, rep(0, nrow(test_dtf)))
+    colnames(test_dtf)[dim(test_dtf)[2]] <- frequent_words[i]
+  }
+}
+test_dtf <- test_dtf[,frequent_words]
+
+#creating indicator variables
+curr_pos <- 1
+is_ECS50 <- rep(0, nrow(dtf))
+is_ECS50[curr_pos:exam_length["ECS50"]] <- 1
+curr_pos <- curr_pos + exam_length["ECS50"]
+is_ECS132 <- rep(0, nrow(dtf))
+is_ECS132[curr_pos:(curr_pos + exam_length["ECS132"] - 1)] <- 1
+curr_pos <- curr_pos + exam_length["ECS132"]
+is_ECS145 <- rep(0, nrow(dtf))
+is_ECS145[curr_pos:(curr_pos + exam_length["ECS145"] - 1)] <- 1
+curr_pos <- curr_pos + exam_length["ECS145"]
+is_ECS152A <- rep(0, nrow(dtf))
+is_ECS152A[curr_pos:(curr_pos + exam_length["ECS152A"] - 1)] <- 1
+curr_pos <- curr_pos + exam_length["ECS152A"]
+is_ECS154A <- rep(0, nrow(dtf))
+is_ECS154A[curr_pos:(curr_pos + exam_length["ECS154A"] - 1)] <- 1
+curr_pos <- curr_pos + exam_length["ECS154A"]
+is_ECS154B <- rep(0, nrow(dtf))
+is_ECS154B[curr_pos:(curr_pos + exam_length["ECS154B"] - 1)] <- 1
+curr_pos <- curr_pos + exam_length["ECS154B"]
+is_ECS156 <- rep(0, nrow(dtf))
+is_ECS156[curr_pos:(curr_pos + exam_length["ECS156"] - 1)] <- 1
+curr_pos <- curr_pos + exam_length["ECS156"]
+is_ECS158 <- rep(0, nrow(dtf))
+is_ECS158[curr_pos:(curr_pos + exam_length["ECS158"] - 1)] <- 1
+curr_pos <- curr_pos + exam_length["ECS158"]
+is_ECS256 <- rep(0, nrow(dtf))
+is_ECS256[curr_pos:(curr_pos + exam_length["ECS256"] - 1)] <- 1
+
+#creating 9 glm's
+ECS50_model <- glm(is_ECS50 ~ dtf, family = binomial)
+ECS132_model <- glm(is_ECS132 ~ dtf, family = binomial)
+ECS145_model <- glm(is_ECS145 ~ dtf, family = binomial)
+ECS152A_model <- glm(is_ECS152A ~ dtf, family = binomial)
+ECS154A_model <- glm(is_ECS154A ~ dtf, family = binomial)
+ECS154B_model <- glm(is_ECS154B ~ dtf, family = binomial)
+ECS156_model <- glm(is_ECS156 ~ dtf, family = binomial)
+ECS158_model <- glm(is_ECS158 ~ dtf, family = binomial)
+ECS256_model <- glm(is_ECS256 ~ dtf, family = binomial)
+exam_coefs <- list(coef(ECS50_model), coef(ECS132_model), coef(ECS145_model), 
+                coef(ECS152A_model), coef(ECS154A_model), coef(ECS154B_model),
+                 coef(ECS156_model), coef(ECS158_model), coef(ECS256_model))
+
+names(exam_coefs) <- c("ECS50", "ECS132", "ECS145", 
+                       "ECS152A", "ECS154A", "ECS154B", 
+                       "ECS156", "ECS158", "ECS256")
+total <- 0
+correct_num <- 0
+for (fileIndex in 1:50) {
+  max <- -1
+  best_guess <- vector()
+  for (i in 1:length(exam_coefs)) {
+    u <- sum(exam_coefs[[i]] * c(1,test_dtf[fileIndex,]))
+    score <- 1 / (1 + exp(-(u)))
+    if (score > max) {
+      max <- score
+      best_guess <- names(exam_coefs)[i]
+    }
+  }
+  cat("best model is:", best_guess, "\n")
+  cat("best prob is:", max, "\n")
+  cat("\n------------------\n")
+  if (best_guess == names(test_data)[fileIndex]) {
+    correct_num <- correct_num + 1
+  }
+  total <- total + 1
+}
+cat("Accuracy:", correct_num / total * 100, "%\n")
