@@ -42,6 +42,69 @@ ECS156_exams <- append(complete_file_path(urls["ECS156"], ECS156_exams), ECS156_
 ECS158_exams <- append(complete_file_path(urls["ECS158"], ECS158_exams), ECS158_exams)
 ECS256_exams <- append(complete_file_path(urls["ECS256"], ECS256_exams), ECS256_exams)
 
+# test data
+test_data <- c("http://heather.cs.ucdavis.edu/~matloff/50/OldExams/F05I.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/50/OldExams/F12Quiz2Wed.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/50/OldExams/F12Quiz4Wed.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/50/OldExams/S01III.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/50/OldExams/S03I.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/50/OldExams/S10Quiz3.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/50/OldExams/S10Quiz6.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/50/OldExams/S11Midterm.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/50/OldExams/S11Quiz7.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/50/OldExams/W02III.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/50/OldExams/W04II002.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/50/OldExams/W05II002.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/50/OldExams/W07I.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/F10Quiz8.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/F11Quiz4.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/F12Quiz1.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/F12Quiz6.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/F13Quiz7.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/S10Quiz3.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/W12Quiz2.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/W12Quiz4.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/W12Quiz8.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/W15Quiz5.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/W15Quiz6.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/W16Quiz4.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/W16Quiz8.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/W17Quiz4.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/132/OldExams/W17Quiz7.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/145/Exams/F11Quiz2.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/145/Exams/F11Quiz4a.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/145/Exams/F14Quiz3.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/145/Exams/S03II.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/145/Exams/S07III.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/145/Exams/W17Quiz2.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/145/Exams/W17Quiz6.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/152A/Exams/F01III.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/152A/Exams/S99I.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/154A/OldExams/F98I.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/154A/OldExams/F99III.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/154A/OldExams/W95II.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/154B/Exams/W99III.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/156/Exams/W08I.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/158/OldExams/S02II.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/158/OldExams/S08II.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/158/OldExams/S10Quiz4.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/158/OldExams/S11Quiz1.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/158/OldExams/S16Quiz5.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/158/OldExams/W12Quiz2.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/158/OldExams/W15Quiz3.tex",
+  "http://heather.cs.ucdavis.edu/~matloff/256/Exams/F10Quiz2.tex")
+
+# training data
+ECS50_exams <- ECS50_exams[!(ECS50_exams %in% test_data)]
+ECS132_exams <- ECS132_exams[!(ECS132_exams %in% test_data)]
+ECS145_exams <- ECS145_exams[!(ECS145_exams %in% test_data)]
+ECS152A_exams <- ECS152A_exams[!(ECS152A_exams %in% test_data)]
+ECS154A_exams <- ECS154A_exams[!(ECS154A_exams %in% test_data)]
+ECS154B_exams <- ECS154B_exams[!(ECS154B_exams %in% test_data)]
+ECS156_exams <- ECS156_exams[!(ECS156_exams %in% test_data)]
+ECS158_exams <- ECS158_exams[!(ECS158_exams %in% test_data)]
+ECS256_exams <- ECS256_exams[!(ECS256_exams %in% test_data)]
+
 # read files and store in each course's exam vector
 remove_latex_term <- function(file) gsub("([{]?)[\\](.)*[}]", " ", readLines(file))
 collapse_exam <- function(exam) lapply(exam, remove_latex_term)
