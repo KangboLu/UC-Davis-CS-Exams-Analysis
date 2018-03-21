@@ -93,20 +93,9 @@ test_data <- c("http://heather.cs.ucdavis.edu/~matloff/50/OldExams/F05I.tex",
   "http://heather.cs.ucdavis.edu/~matloff/158/OldExams/W12Quiz2.tex",
   "http://heather.cs.ucdavis.edu/~matloff/158/OldExams/W15Quiz3.tex",
   "http://heather.cs.ucdavis.edu/~matloff/256/Exams/F10Quiz2.tex")
-names(test_data) <- c(rep("ECS50", 13), rep("ECS132", 15), rep("ECS145", 7), rep("ECS152A", 2),
-                      rep("ECS154A", 3), rep("ECS154B", 1), rep("ECS156", 1), rep("ECS158", 7),
-                      rep("ECS256", 1))
-# names(test_data) <- c(names(test_data), rep("ECS132", 15))
-# names(test_data) <- c(names(test_data), rep("ECS145", 7))
-# names(test_data) <- c(names(test_data), rep("ECS152A", 2))
-# names(test_data) <- c(names(test_data), rep("ECS154A", 3))
-# names(test_data) <- c(names(test_data), rep("ECS154B", 1))
-# names(test_data) <- c(names(test_data), rep("ECS156", 1))
-# names(test_data) <- c(names(test_data), rep("ECS158", 7))
-# names(test_data) <- c(names(test_data), rep("ECS256", 1))
-
-
-
+names(test_data) <- c(rep("ECS50", 13), rep("ECS132", 15), rep("ECS145", 7), 
+                      rep("ECS152A", 2), rep("ECS154A", 3), rep("ECS154B", 1), 
+                      rep("ECS156", 1), rep("ECS158", 7), rep("ECS256", 1))
 # training data
 ECS50_exams <- ECS50_exams[!(ECS50_exams %in% test_data)]
 ECS132_exams <- ECS132_exams[!(ECS132_exams %in% test_data)]
@@ -137,8 +126,9 @@ ECS154B_exams <- collapse_exam(ECS154B_exams)
 ECS156_exams <- collapse_exam(ECS156_exams)
 ECS158_exams <- collapse_exam(ECS158_exams)
 ECS256_exams <- collapse_exam(ECS256_exams)
-exams <- c(ECS50_exams, ECS132_exams, ECS145_exams, ECS152A_exams, ECS154A_exams,
-           ECS154B_exams, ECS156_exams, ECS158_exams ,ECS256_exams)
+exams <- c(ECS50_exams, ECS132_exams, ECS145_exams, 
+           ECS152A_exams, ECS154A_exams, ECS154B_exams, 
+           ECS156_exams, ECS158_exams ,ECS256_exams)
 
 # remove stopwords for better analysis
 stop_words <- c("The", "the", "blank", "will", "item", 
@@ -183,8 +173,9 @@ dtf_154B <- create_dtf_matrix(ECS154B_exams)
 dtf_156 <- create_dtf_matrix(ECS156_exams)
 dtf_158 <- create_dtf_matrix(ECS158_exams)
 dtf_256 <- create_dtf_matrix(ECS256_exams)
-frequent_words <- c(colnames(dtf_50), colnames(dtf_132), colnames(dtf_145), colnames(dtf_152A),
-                    colnames(dtf_154A), colnames(dtf_154B), colnames(dtf_156), colnames(dtf_158), colnames(dtf_256))
+frequent_words <- c(colnames(dtf_50), colnames(dtf_132), colnames(dtf_145), 
+                    colnames(dtf_152A), colnames(dtf_154A), colnames(dtf_154B), 
+                    colnames(dtf_156), colnames(dtf_158), colnames(dtf_256))
 frequent_words <- frequent_words[!duplicated(frequent_words)] # remove duplicate
 dtf <- dtf[,frequent_words]
 
@@ -199,7 +190,7 @@ for(i in 1:length(frequent_words)) {
 }
 test_dtf <- test_dtf[,frequent_words]
 
-#creating indicator variables
+#creating indicator variables for course name
 curr_pos <- 1
 is_ECS50 <- rep(0, nrow(dtf))
 is_ECS50[curr_pos:exam_length["ECS50"]] <- 1
@@ -228,7 +219,7 @@ curr_pos <- curr_pos + exam_length["ECS158"]
 is_ECS256 <- rep(0, nrow(dtf))
 is_ECS256[curr_pos:(curr_pos + exam_length["ECS256"] - 1)] <- 1
 
-#creating 9 glm's
+# creating 9 generalized linear model
 ECS50_model <- glm(is_ECS50 ~ dtf, family = binomial)
 ECS132_model <- glm(is_ECS132 ~ dtf, family = binomial)
 ECS145_model <- glm(is_ECS145 ~ dtf, family = binomial)
@@ -241,10 +232,11 @@ ECS256_model <- glm(is_ECS256 ~ dtf, family = binomial)
 exam_coefs <- list(coef(ECS50_model), coef(ECS132_model), coef(ECS145_model), 
                 coef(ECS152A_model), coef(ECS154A_model), coef(ECS154B_model),
                  coef(ECS156_model), coef(ECS158_model), coef(ECS256_model))
-
 names(exam_coefs) <- c("ECS50", "ECS132", "ECS145", 
                        "ECS152A", "ECS154A", "ECS154B", 
                        "ECS156", "ECS158", "ECS256")
+
+# calculate the accuracy for 9 glm model
 total <- 0
 correct_num <- 0
 for (fileIndex in 1:50) {
