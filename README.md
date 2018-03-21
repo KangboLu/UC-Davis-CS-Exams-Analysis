@@ -7,6 +7,12 @@ Statistical analysis on UCD ECS132, ECS145,and ECS154 quiz data
 
 Final exam day (no written final), March 20, 11:59 pm. **NO LATE SUBMISSIONS**.
 
+## Notes on Submission Packages
+Tar all files in workng directory:
+<pre>tar -cvf njahja.kblu.lhding.aaama.tar *</pre>
+Submission command:
+<pre>handin matloff 132project njahja.kblu.lhding.aaama.tar</pre>
+
 ## Problem A
 
 Here you will do some statistical analysis on my undergrad quiz data, with a Description goal. Here are the details:
