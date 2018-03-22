@@ -1,7 +1,8 @@
-# Statistical-Analysis-with-Quiz-Data
-Statistical analysis on UCD ECS132, ECS145,and ECS154 quiz data
-
 # ECS 132 Term Project
+
+## First release of 132 term project:
+* ProblemA.R accomplished statistical analysis on ECS132, ECS145, and ECS154 students' quiz average from University of California at Davis.
+* ProblemB.R gathered, cleaned, and organized training data (previous exams) into document term matrix for creating 9 logistic models for 9 courses. The 9 models are used to predict which course does the test data (exam) belongs to.
 
 ## Due date:
 
