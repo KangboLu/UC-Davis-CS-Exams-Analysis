@@ -1,7 +1,8 @@
 # ECS 132 Term Project
-
 ## Detailed Description:
 [Click Here](https://github.com/KangboLu/UC-Davis-CS-Exams-Analysis/blob/master/ECS132_TermProject.pdf)
+
+![Word Cloud for ECS132 Exams](https://github.com/KangboLu/UC-Davis-CS-Exams-Analysis/blob/master/ECS132.jpeg "WordCloud")
 
 ## First release of 132 term project:
 * ProblemA.R accomplished statistical analysis on ECS132, ECS145, and ECS154 students' quiz average from University of California at Davis.
