@@ -1,20 +1,13 @@
 # ECS 132 Term Project
 
+## Detailed Description:
+[Click Here](https://github.com/KangboLu/UC-Davis-CS-Exams-Analysis/blob/master/ECS132_TermProject.pdf)
+
 ## First release of 132 term project:
 * ProblemA.R accomplished statistical analysis on ECS132, ECS145, and ECS154 students' quiz average from University of California at Davis.
 * ProblemB.R gathered, cleaned, and organized training data (previous exams) into document term matrix for creating 9 logistic models for 9 courses. The 9 models are used to predict which course does the test data (exam) belongs to.
 
-## Due date:
-
-Final exam day (no written final), March 20, 11:59 pm. **NO LATE SUBMISSIONS**.
-
-## Notes on Submission Packages
-Tar all files in workng directory:
-<pre>tar -cvf njahja.kblu.lhding.aaama.tar *</pre>
-Submission command:
-<pre>handin matloff 132project njahja.kblu.lhding.aaama.tar</pre>
-
-## Problem A
+## Task A
 
 Here you will do some statistical analysis on my undergrad quiz data, with a Description goal. Here are the details:
 
@@ -40,7 +33,7 @@ Here you will do some statistical analysis on my undergrad quiz data, with a Des
 
     *   Do an analysis of your choice (justified!) that investigates whether there is a time trend in the proportion of CS majors in our department, based on this data.
 
-## Problem B
+## Task B
 
 Here you will do some predictive modeling (machine learning), involving text data. One active branch of this field is text classification, e.g. sentiment analysis. We will be less ambitious here, but the principles are the same. Here are the details.
 
@@ -61,29 +54,3 @@ Here you will do some predictive modeling (machine learning), involving text dat
 *   The other major issue is _which_ words to use. This is hard. A rough rule of thumb is to use no more than sqrt(n) predictor variables, where n is the number of cases in the training set, thus no more than sqrt(n) word counts here. But which ones? Explain your decision on this thoroughly in your report.
 
 *   This is another of those assignments in which you at first will have little or no idea as to what to do. Give it a lot of thought, and discuss it vigorously in your group. Your solution will gradually take shape. Of course, feel free to ask Robin or me if you get stuck and you are not sure about something.
-
-## <a name="submit">**<span style="color: #FF0000">IMPORTANT SUBMISSION DETAILS:</span>**</a>
-
-*   Your group submits just ONE copy of the report.
-
-*   Absolutely NO late reports will be accepted. As you near the deadline, keep submitting what you have so (each one will overwrite the last), so that at least you will get a lot of credit even if you don't finish.
-
-*   Submit your report, including all files (**.tex**, **.pdf**, R files, any image files, etc.) to my **handin** site on CSIF (NOT the TA's site), directory **132project**. The name of your file must be of the form **email1.email2....tar** , where each **emaili** is the UCD e-mail address of group member i, e.g. **bclinton.gwbush.bobama.dtrump.tar**. Note the periods separating fields. Your **.tar** file must contain only regular files, NO SUBDIRECTORIES!!!! And **.tar** does NOT mean **.tar.gz** or **.tar.bz2** (or for that matter **.rar**, which one students used once).
-
-*   Double check that you are meeting all the specs.
-
-*   NO SUBDIRECTORIES! NO SUBDIRECTORIES! NO SUBDIRECTORIES!
-
-*   Make sure that all partners' names are on the report, and that the e-mail addresses in the file name are EXACTLY the official UCD e-mail addresses for the students. These are the addresses at which you have been receiving e-mail from me regarding blog posts. DON'T RISK HAVING A TEAM MEMBER FAILING TO GET CREDIT FOR THE PROJECT -- IT HAS HAPPENED!
-
-*   Did I mention, NO SUBDIRECTORIES!
-
-## <a name="grading">Grading criteria:</a>
-
-*   Technical content of the work.
-
-*   Adherence to instructions.
-
-*   Professional quality of the work.
-
-*   A+ grades are very possible, and can have a significant impact on your course grade, letters of recommendation, knighthoods, marriage prospects, coronations, etc.
