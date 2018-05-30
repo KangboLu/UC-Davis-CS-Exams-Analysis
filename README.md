@@ -1,4 +1,4 @@
-# ECS 132 Term Project
+# Probabilistic and Statistical Modeling Project
 ## Detailed Description:
 [Click Here](https://github.com/KangboLu/UC-Davis-CS-Exams-Analysis/blob/master/ECS132_TermProject.pdf)
 
